@@ -9,7 +9,9 @@ export const useUserStore = defineStore('user', () => {
   const account = ref('')
   const email = ref('')
   const cart = ref(0)
+  const bidcart = ref(0)
   const role = ref(0)
+  const sales = ref(0)
 
   const isLogin = computed(() => {
     return token.value.length > 0
@@ -28,7 +30,9 @@ export const useUserStore = defineStore('user', () => {
       account.value = data.result.account
       email.value = data.result.email
       cart.value = data.result.cart
+      bidcart.value = data.result.bidcart
       role.value = data.result.role
+      sales.value = data.result.sales
       Swal.fire({
         icon: 'success',
         title: '成功',
@@ -51,6 +55,7 @@ export const useUserStore = defineStore('user', () => {
       account.value = ''
       role.value = 0
       cart.value = 0
+      bidcart.value = 0
       router.push('/')
       Swal.fire({
         icon: 'success',
@@ -73,13 +78,15 @@ export const useUserStore = defineStore('user', () => {
       account.value = data.result.account
       email.value = data.result.email
       cart.value = data.result.cart
+      sales.value = data.result.sales
+      bidcart.value = data.result.bidcart
       role.value = data.result.role
     } catch (error) {
       logout()
     }
   }
 
-  const editCart = async ({ _id, quantity }) => {
+  const editCart = async ({ _id, quantity, sales }) => {
     if (token.value.length === 0) {
       Swal.fire({
         icon: 'error',
@@ -90,7 +97,7 @@ export const useUserStore = defineStore('user', () => {
       return
     }
     try {
-      const { data } = await apiAuth.post('/users/cart', { p_id: _id, quantity: parseInt(quantity) })
+      const { data } = await apiAuth.post('/users/cart', { p_id: _id, quantity: parseInt(quantity), sales: parseInt(sales) })
       cart.value = data.result
 
       Swal.fire({
@@ -103,6 +110,33 @@ export const useUserStore = defineStore('user', () => {
         icon: 'error',
         title: '失敗',
         text: error?.response?.data?.message || '發生錯誤'
+      })
+    }
+  }
+  const editbidcart = async ({ _id, bidprice }) => {
+    if (token.value.length === 0) {
+      Swal.fire({
+        icon: 'error',
+        title: '失敗',
+        text: '請先登入'
+      })
+      router.push('/login')
+      return
+    }
+    try {
+      const { data } = await apiAuth.post('users/bidcart', { b_id: _id, bidprice: parseInt(bidprice) })
+      bidcart.value = data.result
+
+      Swal.fire({
+        icon: 'success',
+        title: '成功',
+        text: '競標成功'
+      })
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: '失敗',
+        text: error?.response?.data?.message || '發生錯誤誤'
       })
     }
   }
@@ -130,6 +164,7 @@ export const useUserStore = defineStore('user', () => {
     account,
     email,
     cart,
+    bidcart,
     role,
     login,
     logout,
@@ -138,7 +173,8 @@ export const useUserStore = defineStore('user', () => {
     isAdmin,
     avatar,
     editCart,
-    checkout
+    checkout,
+    editbidcart
 
   }
 }, {

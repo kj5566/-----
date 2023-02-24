@@ -1,26 +1,41 @@
-<template lang="pug">
-#orders
-  v-row
-    v-col(cols="12")
-      h1.text-center 訂單
-    v-divider
-    v-col(cols="12")
-      v-table
-        thead
-          tr
-            th ID
-            th 日期
-            th 金額
-            th 商品
-        tbody
-          tr(v-for="order in orders" :key="order._id")
-            td {{ order._id }}
-            td {{ new Date(order.date).toLocaleDateString() }}
-            td {{ order.totalPrice }}
-            td
-              ul
-                li(v-for="product in order.products" :key="product._id")
-                  | {{ product.quantity + ' 個 ' + product.p_id.name }}
+<template>
+  <v-app id="app">
+    <div id="orders" class="m-a">
+      <v-row>
+        <v-col cols="12">
+          <h1 class="text-center h1-title m-a">訂單</h1>
+        </v-col>
+        <v-divider></v-divider>
+        <v-col cols="12">
+          <v-table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>日期</th>
+                <th>金額</th>
+                <th>商品</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="order in orders" :key="order._id">
+                <td>{{ order._id }}</td>
+                <td>{{ new Date(order.date).toLocaleDateString() }}</td>
+                <td>{{ order.totalPrice }}</td>
+                <td>
+                  <ul>
+                    <li v-for="product in order.products" :key="product._id">{{ product.quantity + ' 個 ' + product.p_id.name }}</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </v-col>
+        <v-col cols="12">
+          <h1 class="text-center tfoot"><br></h1>
+        </v-col>
+      </v-row>
+    </div>
+  </v-app>
 </template>
 
 <script setup>

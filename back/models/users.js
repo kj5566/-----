@@ -13,6 +13,17 @@ const cartSchema = new Schema({
     required: [true, '缺少數量']
   }
 })
+const bidcartSchema = new Schema({
+  b_id: {
+    type: ObjectId,
+    ref: 'biddings',
+    required: [true, '缺少商品']
+  },
+  bidprice: {
+    type: Number,
+    required: [true, '沒有出價']
+  }
+})
 
 const schema = new Schema({
   account: {
@@ -44,6 +55,10 @@ const schema = new Schema({
   },
   cart: {
     type: [cartSchema],
+    default: []
+  },
+  bidcart: {
+    type: [bidcartSchema],
     default: []
   },
   role: {

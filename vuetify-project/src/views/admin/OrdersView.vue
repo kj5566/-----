@@ -1,9 +1,8 @@
 <template lang="pug">
-#orders
+#orders.m-10
   v-row
     v-col(cols="12")
       h1.text-center 訂單管理
-    v-divider
     v-col(cols="12")
       v-table
         thead

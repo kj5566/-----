@@ -1,14 +1,13 @@
-import products from '../models/products.js'
+import biddings from '../models/biddings.js'
 
-export const createProduct = async (req, res) => {
+export const createbiddings = async (req, res) => {
   try {
-    const result = await products.create({
+    const result = await biddings.create({
       name: req.body.name,
+      sell: req.body.sell,
       price: req.body.price,
-      sales: req.body.sales,
       description: req.body.description,
       image: req.file?.path || '',
-      sell: req.body.sell,
       category: req.body.category
     })
     res.status(200).json({ success: true, message: '', result })
@@ -21,27 +20,27 @@ export const createProduct = async (req, res) => {
   }
 }
 
-export const getSellProducts = async (req, res) => {
+export const getSellbiddings = async (req, res) => {
   try {
-    const result = await products.find({ sell: true })
+    const result = await biddings.find({ sell: true })
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
 
-export const getAllProducts = async (req, res) => {
+export const getAllbiddings = async (req, res) => {
   try {
-    const result = await products.find()
+    const result = await biddings.find()
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
 
-export const getProduct = async (req, res) => {
+export const getbiddings = async (req, res) => {
   try {
-    const result = await products.findById(req.params.id)
+    const result = await biddings.findById(req.params.id)
     if (!result) {
       res.status(404).json({ success: false, message: '找不到' })
     } else {
@@ -56,19 +55,18 @@ export const getProduct = async (req, res) => {
   }
 }
 
-export const editProduct = async (req, res) => {
+export const editbiddings = async (req, res) => {
   try {
-    const result = await products.findByIdAndUpdate(req.params.id, {
+    const result = await biddings.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
       price: req.body.price,
-      description: req.body.description,
-      sales: req.body.sales,
-      image: req.file?.path,
       sell: req.body.sell,
+      description: req.body.description,
+      image: req.file?.path,
       category: req.body.category
     }, { new: true })
     if (!result) {
-      res.status(404).json({ success: false, message: '找不到' })
+      res.status(404).json({ success: false, message: '找不到1' })
     } else {
       res.status(200).json({ success: true, message: '', result })
     }
@@ -82,3 +80,5 @@ export const editProduct = async (req, res) => {
     }
   }
 }
+
+// 監聽

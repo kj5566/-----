@@ -1,24 +1,22 @@
 <template>
-  <div id="bit">
-    <v-row>
-      <v-col cols="12">
-        <h1 class="text-center">OO模型</h1>
+  <v-app id="app">
+    <div>
+      <v-col cols="8" class="m-a">
+        <v-img :src="s"></v-img>
       </v-col>
+      <v-col cols="8"></v-col>
+      <div id="bit">
 
-      <v-divider></v-divider>
+        <v-row>
 
-      <v-col cols="12"><v-select
-        :items="['模型', '遊戲王卡', '公仔', '景品', '其他']"
-        label="分類"
-      ></v-select></v-col>
+          <p v-for="(product, index) in products" :key="index" class="oncard">
+            <ProductCard v-bind="product"></ProductCard>
+          </p>
 
-      <v-col v-for="product in products" :key="product._id" cols="9" md="6" lg="3">
-        <ProductCard v-bind="product"></ProductCard>
-      </v-col>
-
-    </v-row>
-  </div>
-
+        </v-row>
+      </div>
+    </div>
+  </v-app>
 </template>
 
 <script setup>
@@ -41,4 +39,12 @@ const products = reactive([]);
     })
   }
 })()
+
+</script>
+<script>
+export default {
+  data () {
+    return { s: 'https://res.cloudinary.com/dgf0jyslt/image/upload/v1677052481/%E7%B7%9A%E4%B8%8A%E5%95%86%E5%9F%8E_uak3rn.png' }
+  }
+}
 </script>

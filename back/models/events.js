@@ -5,7 +5,6 @@ const schema = new Schema({
     type: String,
     required: [false, '缺少名稱']
   },
-
   description: {
     type: String,
     required: [false, '缺少說明']

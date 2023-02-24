@@ -1,30 +1,32 @@
 <template>
-  <div id="home">
-    <v-row>
-      <v-col cols="12">
-        <h1 class="text-center">OO模型</h1>
-      </v-col>
-      <v-carousel
-        cycle
-        height="400"
-        hide-delimiter-background
-        show-arrows-on-hover
-        transition="fade-transition"
-      >
+
+  <v-app id="app">
+
+    <v-row class="home ">
+
+      <v-carousel hide-delimiters cycle height="840">
         <v-carousel-item
           v-for="(item,i) in items"
           :key="i"
+          :show-arrows="hover"
           :src="item.src"
-          reverse-transition="fade-transition"
-          transition="fade-transition"
+          class="sb"
         ></v-carousel-item>
       </v-carousel>
-      <v-divider></v-divider>
-      <v-col v-for="product in products" :key="product._id" cols="12" md="6" lg="3">
-        <ProductCard v-bind="product"></ProductCard>
+      <v-col cols="2"></v-col>
+      <v-col cols="8">
+        <v-img :src="s"></v-img>
       </v-col>
+      <v-col cols="2"></v-col>
+
+      <p v-for="(product,idx) in products" :key="idx" class="container">
+        <ProductCard v-if="product.sales>10" v-bind="product"></ProductCard>
+      </p>
+
     </v-row>
-  </div>
+
+  </v-app>
+
 </template>
 
 <script setup>
@@ -52,21 +54,48 @@ const products = reactive([]);
 export default {
   data () {
     return {
+
       items: [
         {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg'
+          src: 'https://res.cloudinary.com/dgf0jyslt/image/upload/v1676961434/xh5btbn9aklhhqdnqgya.jpg'
         },
         {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg'
+          src: 'https://res.cloudinary.com/dgf0jyslt/image/upload/v1677139833/event2_fusaj3.png'
         },
         {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg'
+          src: 'https://res.cloudinary.com/dgf0jyslt/image/upload/v1677138042/%E6%B0%B4%E6%98%9F_o0hjid.png'
         },
         {
-          src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg'
+          src: 'https://res.cloudinary.com/dgf0jyslt/image/upload/v1677138181/gundam_rx0myx.png'
         }
-      ]
+      ],
+      s: {
+        src: 'https://res.cloudinary.com/dgf0jyslt/image/upload/v1677052481/%E7%86%B1%E9%96%80%E5%95%86%E5%93%81_wdrygl.png'
+      }
     }
   }
 }
 </script>
+<style>
+.v-container {
+margin:0 !important;
+padding:0!important;
+
+}
+
+.v-carousel-item{
+  padding:0
+}
+.v-main{
+    margin:0 !important;
+
+  }
+
+#app {
+  background: url('https://res.cloudinary.com/dgf0jyslt/image/upload/v1677129527/background_briwsm.png')
+    !important;
+  background-size: cover;
+  padding:0;
+  margin:0;
+}
+</style>

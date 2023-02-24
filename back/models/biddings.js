@@ -11,11 +11,10 @@ const schema = new Schema({
     min: [0, '價格錯誤'],
     required: [true, '缺少價格']
   },
-
-  sales: {
+  amount: {
     type: Number,
-    min: [0, '銷量錯誤'],
-    required: [true, '缺少銷量']
+    min: [0, '價格錯誤'],
+    required: [true, '缺少價格']
   },
   description: {
     type: String,
@@ -25,10 +24,7 @@ const schema = new Schema({
     type: String,
     required: [true, '缺少圖片']
   },
-  sell: {
-    type: Boolean,
-    required: [true, '缺少狀態']
-  },
+
   category: {
     type: String,
     required: [true, '缺少分類'],
@@ -39,4 +35,4 @@ const schema = new Schema({
   }
 }, { versionKey: false })
 
-export default model('products', schema)
+export default model('biddings', schema)

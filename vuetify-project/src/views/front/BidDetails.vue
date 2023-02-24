@@ -1,27 +1,26 @@
 <template>
 
-  <div id="product">
+  <div id="biddings">
     <v-app id="app">
-
       <v-card class="card">
-        <h1 class="text-center h1-title m-a ">{{ product.name }}</h1>
+        <h1 class="text-center h1-title m-a ">{{ biddings.name }}</h1>
         <h1 class="space1"></h1>
         <v-row>
 
           <v-col cols="6">
-            <v-img :src="product.image" height="560"></v-img>
+            <v-img :src="biddings.image" height="560"></v-img>
           </v-col>
           <v-col cols="6" class="p-20">
             <br><br>
 
-            <h1><p class="br">{{ product.description }}</p></h1>
+            <h1><p class="pre ">{{ biddings.description }}</p></h1>
             <h1 class="space1"></h1>
-            <h2><p class="pre  big1">${{ product.price }}</p></h2>
+            <h2><p class="pre  big1">${{ biddings.price }}</p></h2>
             <h1 class="space1 "></h1>
-            <v-form v-model="valid" @submit.prevent="submitCart">
-              <v-text-field v-model.number="quantity" type="number" label="數量" :rules="[rules.required, rules.number]"></v-text-field>
+            <v-form v-model="valid" @submit.prevent="submitbidcart">
+              <v-text-field v-model.number="bidprice" type="number" label="加價" :rules="[rules.required, rules.number]"></v-text-field>
               <h3 class="text-right">
-                <v-btn type="submit" color="primary">加入購物車</v-btn>
+                <v-btn type="submit" color="primary">競標</v-btn>
 
                 <v-btn @click="router.go(-1)">回上頁</v-btn>
               </h3>
@@ -29,13 +28,9 @@
             </v-form>
           </v-col>
         </v-row>
-        <v-overlay class="align-center justify-center text-center" :model-value="!product.sell" persistent="persistent">
-          <h1 class="text-red">已下架</h1>
-          <v-btn @click="router.go(-1)">回上頁</v-btn>
-        </v-overlay>
+
       </v-card>
     </v-app>
-
   </div>
 </template>
 
@@ -50,10 +45,10 @@ const route = useRoute()
 const router = useRouter()
 
 const user = useUserStore()
-const { editCart } = user
+const { editbidcart } = user
 
 const valid = ref(false)
-const quantity = ref(0)
+const bidprice = ref(0)
 
 const rules = {
   required (value) {
@@ -64,33 +59,33 @@ const rules = {
   }
 }
 
-const product = reactive({
+const biddings = reactive({
   _id: '',
   name: '',
-  price: 0,
+  bidprice: 0,
   description: '',
   image: '',
   sell: true,
   category: ''
 })
 
-const submitCart = () => {
+const submitbidcart = () => {
   if (!valid.value) return
-  editCart({ _id: product._id, quantity: quantity.value })
+  editbidcart({ _id: biddings._id, bidprice: bidprice.value })
 }
 
 (async () => {
   try {
-    const { data } = await api.get('/products/' + route.params.id)
-    product._id = data.result._id
-    product.name = data.result.name
-    product.price = data.result.price
-    product.description = data.result.description
-    product.image = data.result.image
-    product.sell = data.result.sell
-    product.category = data.result.category
+    const { data } = await api.get('/biddings/' + route.params.id)
+    biddings._id = data.result._id
+    biddings.name = data.result.name
+    biddings.price = data.result.price
+    biddings.description = data.result.description
+    biddings.image = data.result.image
+    biddings.category = data.result.category
+    biddings.bidprice = data.result.bidprice
 
-    document.title = 'OO模型 | ' + product.name
+    document.title = 'OO模型 | ' + biddings.name
     // document.querySelector('meta[property="og:title"]').setAttribute('content', product.name)
   } catch (error) {
     Swal.fire({
@@ -101,4 +96,7 @@ const submitCart = () => {
     router.go(-1)
   }
 })()
+</script>
+<script>
+
 </script>

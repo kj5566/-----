@@ -1,11 +1,10 @@
 <template>
-  <div id="admin-events">
-    <h1 class="text-center">最新活動</h1>
+  <div id="admin-biddings">
+    <h1 class="text-center">競標管理</h1>
 
     <v-row>
-
       <v-col cols="12">
-        <v-btn color="success" @click="openDialog(-1)">新增活動</v-btn>
+        <v-btn color="success" @click="openDialog(-1)">新增競標商品</v-btn>
       </v-col>
       <v-col cols="12">
         <v-table>
@@ -13,15 +12,17 @@
             <tr>
               <th>圖片</th>
               <th>名稱</th>
+              <th>時間</th>
               <th>管理</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(event, idx) in events" :key="event._id">
+            <tr v-for="(bidding, idx) in biddings" :key="bidding._id">
               <td>
-                <v-img :src="event.image" :aspect-ratio="1" :width="100"></v-img>
+                <v-img :src="bidding.image" :aspect-ratio="1" :width="200"></v-img>
               </td>
-              <td>{{ event.name }}</td>
+              <td>{{ bidding.name }}</td>
+              <td>{{ bidding.time }}</td>
               <td>
                 <v-btn color="primary" icon="mdi-pencil" variant="text" @click="openDialog(idx)"></v-btn>
               </td>
@@ -34,19 +35,26 @@
       <v-form v-model="form.valid" @submit.prevent="submit">
         <v-card>
           <v-card-title>
-            <h1 class="text-center">{{ form._id.length > 0 ? '編輯活動' : '新增活動' }}</h1>
+            <h1 class="text-center">{{ form._id.length > 0 ? '編輯商品' : '新增競標商品' }}</h1>
           </v-card-title>
           <v-card-text>
-            <v-row><v-col cols="4"></v-col>
-              <v-col cols="4">
-                <v-text-field v-model="form.name" type="text" label="名稱" :rules="[rules.required]"></v-text-field>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field ref="input" v-model="form.name" type="text" label="名稱" :rules="[rules.required]"></v-text-field>
               </v-col>
-              <v-col cols="4"></v-col>
-              <v-col cols="4"></v-col>
-              <v-col cols="4">
-                <v-textarea v-model="form.description" rows="3" auto-grow="auto-grow" label="說明" :rules="[rules.required]"></v-textarea>
+              <v-col cols="12">
+                <v-text-field v-model="form.price" type="number" label="起標價格" :rules="[rules.required, rules.price]"></v-text-field>
               </v-col>
-              <v-col cols="4"></v-col>
+              <v-col cols="12">
+                <v-text-field v-model="form.time" type="number" label="時間" :rules="[rules.required, rules.time]"></v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-textarea v-model="form.description" rows="1" auto-grow="auto-grow" label="說明" :rules="[rules.required]"></v-textarea>
+              </v-col>
+              <v-col cols="12">
+                <v-select v-model="form.category" :items="categories" :rules="[rules.required]"></v-select>
+              </v-col>
+
               <v-col cols="12">
                 <v-image-input v-model="form.image" class="mx-auto" removable="removable" :max-file-size="1"></v-image-input>
               </v-col>
@@ -64,24 +72,32 @@
 </template>
 <script setup>
 import { apiAuth } from '@/plugins/axios'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import Swal from 'sweetalert2'
-
+const input = ref(null)
+const categories = ['模型', '遊戲王卡', '公仔', '景品', '其他']
 const rules = {
   required (value) {
     return !!value || '欄位必填'
   },
   price (value) {
     return value >= 0 || '價格錯誤'
+  },
+  time (value) {
+    return value >= 0 || '時間錯誤'
   }
 }
 
-const events = reactive([])
+const biddings = reactive([])
 const form = reactive({
   _id: '',
   name: '',
+  price: 0,
   description: '',
   image: undefined,
+  time: 0,
+  sell: false,
+  category: '',
   valid: false,
   loading: false,
   dialog: false,
@@ -92,18 +108,24 @@ const openDialog = (idx) => {
   if (idx === -1) {
     form._id = ''
     form.name = ''
+    form.price = 0
+    form.time = 0
     form.description = ''
     form.image = undefined
+    form.sell = false
+    form.category = ''
     form.valid = false
     form.loading = false
     form.idx = -1
   } else {
-    form._id = events[idx]._id
-    form.name = events[idx].name
-
-    form.description = events[idx].description
+    form._id = biddings[idx]._id
+    form.name = biddings[idx].name
+    form.price = biddings[idx].price
+    form.time = biddings[idx].time
+    form.description = biddings[idx].description
     form.image = undefined
-
+    form.sell = biddings[idx].sell
+    form.category = biddings[idx].category
     form.valid = false
     form.loading = false
     form.idx = idx
@@ -119,21 +141,24 @@ const submit = async () => {
   // fd.append(key, value)
   const fd = new FormData()
   fd.append('name', form.name)
+  fd.append('price', form.price)
   fd.append('description', form.description)
   fd.append('image', form.image)
+  fd.append('sell', form.sell)
+  fd.append('category', form.category)
 
   try {
     if (form._id.length === 0) {
-      const { data } = await apiAuth.post('/events', fd)
-      events.push(data.result)
+      const { data } = await apiAuth.post('/biddings', fd)
+      biddings.push(data.result)
       Swal.fire({
         icon: 'success',
         title: '成功',
         text: '新增成功'
       })
     } else {
-      const { data } = await apiAuth.patch('/events/' + form._id, fd)
-      events[form.idx] = data.result
+      const { data } = await apiAuth.patch('/biddings/' + form._id, fd)
+      biddings[form.idx] = data.result
       Swal.fire({
         icon: 'success',
         title: '成功',
@@ -154,8 +179,8 @@ const submit = async () => {
 
 (async () => {
   try {
-    const { data } = await apiAuth.get('/events/all')
-    events.push(...data.result)
+    const { data } = await apiAuth.get('/biddings/all')
+    biddings.push(...data.result)
   } catch (error) {
     Swal.fire({
       icon: 'error',

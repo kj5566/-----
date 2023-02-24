@@ -1,37 +1,38 @@
 <template>
 
-  <v-app-bar color="primary">
+  <v-app-bar
+    class="lin"
+  >
 
     <v-spacer>
 
-      <v-tabs
-        fixed-tabs
-        background-color="indigo"
-        dark
-      >
-        <v-tab to="/">
-          <h1> OO模型</h1>
+      <v-tabs>
+        <v-col cols="2">
+          <v-img :src="s" class="none"> <v-tab to="/"> </v-tab></v-img>
+        </v-col>
+        <v-tab class="w1" to="/event">
+          <h2>最新活動</h2>
         </v-tab>
-        <v-tab to="/bit">
-          商品分類
+        <v-tab class="w1" to="/bit">
+          <h2>線上商城</h2>
         </v-tab>
-        <v-tab to="/event">
-          最新活動
+        <v-tab class="w1" to="/bid">
+          <h2>競標商品</h2>
         </v-tab>
-        <v-tab to="/hot">
-          熱門商品
-        </v-tab>
-        <v-tab to="/bid">
-          競標商品
+        <v-tab class="w1" to="/hot">
+          <h2>關於我們</h2>
         </v-tab>
       </v-tabs>
 
     </v-spacer>
-    <v-text-field id="search">搜尋 </v-text-field>
+
     <v-btn v-if="!isLogin" prepend-icon="mdi-account-plus" variant="text" to="/register">註冊</v-btn>
     <v-btn v-if="!isLogin" prepend-icon="mdi-login" variant="text" to="/login">登入</v-btn>
     <v-btn v-if="isLogin" prepend-icon="mdi-cart" variant="text" to="/cart">
       <v-badge :content="cart" color="success" floating="floating">購物車</v-badge>
+    </v-btn>
+    <v-btn v-if="isLogin" prepend-icon="mdi-currency-usd" variant="text" to="/bidcart">
+      競標
     </v-btn>
     <v-btn v-if="isLogin" prepend-icon="mdi-format-list-bulleted" variant="text" to="/orders">訂單</v-btn>
     <v-btn v-if="isLogin &amp;&amp; isAdmin" prepend-icon="mdi-cog" variant="text" to="/admin">管理</v-btn>
@@ -44,40 +45,21 @@
       <router-view></router-view>
     </v-container>
   </v-main>
-  <v-footer
-    color="primary lighten-1"
-    padless
-  >
-    <v-card
-      color="primary lighten-1"
-      flat
-      tile
-      class="indigo lighten-1 white--text text-center"
+
+  <v-footer class="shadow">
+    <v-col
+      class="text-center nil"
+      cols="12"
     >
-      <v-card-text>
-        <v-btn
-          v-for="icon in icons"
-          :key="icon"
-          class="mx-4 white--text"
-          icon
-        >
-          <v-icon size="24px">
-            {{ icon }}
-          </v-icon>
-        </v-btn>
-      </v-card-text>
 
-      <v-card-text class="white--text pt-0">
-        Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet. Mauris cursus commodo interdum. Praesent ut risus eget metus luctus accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim a sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum tempor vel ut orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-      </v-card-text>
+      <div class="pt-5">
+        {{ new Date().getFullYear() }}
+        前端網頁開發技術專題
+      </div>
+    </v-col>
 
-      <v-divider></v-divider>
-
-      <v-card-text class="white--text">
-        {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-      </v-card-text>
-    </v-card>
   </v-footer>
+
 </template>
 
 <script setup>
@@ -90,28 +72,37 @@ const { logout } = user
 
 </script>
 <script>
-
 export default {
-  data: () => ({
-    icons: [
-      'mdi-facebook',
-      'mdi-twitter',
-      'mdi-linkedin',
-      'mdi-instagram'
+  data () {
+    return {
 
-    ]
-  }),
-  methods: {
-    appendIconCallback () {},
-    prependIconCallback () {}
+      s: 'https://res.cloudinary.com/dgf0jyslt/image/upload/v1677044459/rhit7m1giosxqz3uutos.png'
+
+    }
   }
 }
 </script>
 <style>
-#search{
+.lin{
+  /* background-image: linear-gradient(to bottom, #0473E0, #6AC4F5 ) !important; */
+  background-color:#005FDC !important;
+  color:white !important;
+}
+.nil{
+  background-color:#005FDC !important;
+  color:white !important;
+}
 
-  position:absolute;
-  top:20px;
+.none{
+  color:#005FDC !important;
 
+}
+.pt-5{
+  padding-top:20px;
+  padding-bottom:20px
+}
+.shadow {
+    -webkit-filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.7))!important;
+    filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.7))!important;
 }
 </style>

@@ -1,22 +1,42 @@
 <template>
-  <v-card class="card-product">
 
-    <v-img :src="image" cover="cover" height="200px"></v-img>
-    <v-card-title>
-      <router-link class="text-decoration-none text-primary" :to="'/products/' + _id">{{ name }}</router-link>
-    </v-card-title>
-    <v-card-subtitle>${{ price }}</v-card-subtitle>
-    <v-card-text>
-      <p class="pre">{{ description }}</p>
-    </v-card-text>
-    <v-card-text>
-      <p>銷售數量：{{ sales }}</p>
+  <v-hover
+    v-slot="{ isHovering, props }"
+    open-delay="200"
+  >
+    <v-card
+      class="v-card-card" :elevation="isHovering ? 16 : 2"
+      :class="{ 'on-hover': isHovering }"
+      width="350"
+      v-bind="props"
+    >
+      <v-img :src="image" cover="cover" height="300px"><v-card-text class="text-center category">{{ category }}</v-card-text></v-img>
+      <v-card-title>
+        <router-link class="text-decoration-none  text-primary p-0 " :to="'/products/' + _id"><h1>{{ name }}</h1></router-link>
+      </v-card-title>
+      <v-card-subtitle class="big">NT${{ price }}</v-card-subtitle>
 
-    </v-card-text>
-    <v-card-actions>
-      <v-btn color="primary" prepend-icon="mdi-cart" @click="editCart({_id, quantity: 1})">加入購物車</v-btn>
-    </v-card-actions>
-  </v-card>
+      <v-card-text class="text-left">
+        <h3 class="pre">{{ description }}</h3>
+      </v-card-text>
+
+      <!-- <v-card-text class="text-right">
+        <h3>剩餘數量：{{ sales }}</h3>
+      </v-card-text> -->
+      <v-card-actions>
+
+        <v-btn
+          text-center
+          block elevation="5"
+          variant="flat"
+          color="primary"
+          class="v-btnbt"
+          large prepend-icon="mdi-cart" @click="editCart({_id, quantity: 1,sales:-1})"
+        >+</v-btn>
+
+      </v-card-actions>
+    </v-card>
+  </v-hover>
 </template>
 
 <script setup>
@@ -62,3 +82,11 @@ defineProps({
 const user = useUserStore()
 const { editCart } = user
 </script>
+
+<style>
+
+.big{
+  font-size: 20px !important;
+}
+
+ </style>

@@ -16,7 +16,7 @@ const router = createRouter({
           name: 'home',
           component: FrontHomeView,
           meta: {
-            title: '購物網',
+            title: '模型玩具網',
             login: false,
             admin: false
           }
@@ -26,7 +26,7 @@ const router = createRouter({
           name: 'register',
           component: () => import('@/views/front/RegisterView.vue'),
           meta: {
-            title: '購物網 | 註冊',
+            title: '模型玩具網 | 註冊',
             login: false,
             admin: false
           }
@@ -36,7 +36,7 @@ const router = createRouter({
           name: 'login',
           component: () => import('@/views/front/LoginView.vue'),
           meta: {
-            title: '購物網 | 登入',
+            title: '模型玩具網 | 登入',
             login: false,
             admin: false
           }
@@ -47,7 +47,7 @@ const router = createRouter({
           name: 'event',
           component: () => import('@/views/front/NewEvent.vue'),
           meta: {
-            title: '購物網 | 活動',
+            title: '模型玩具網 | 活動',
             login: false,
             admin: false
           }
@@ -57,7 +57,7 @@ const router = createRouter({
           name: 'bit',
           component: () => import('@/views/front/biddingProducts copy.vue'),
           meta: {
-            title: '購物網 | 活動',
+            title: '模型玩具網 | 活動',
             login: false,
             admin: false
           }
@@ -67,7 +67,7 @@ const router = createRouter({
           name: 'hot',
           component: () => import('@/views/front/HotProducts.vue'),
           meta: {
-            title: '購物網 | 活動',
+            title: '模型玩具網 | 活動',
             login: false,
             admin: false
           }
@@ -75,9 +75,9 @@ const router = createRouter({
         {
           path: 'bid',
           name: 'bid',
-          component: () => import('@/views/front/biddingProducts.vue'),
+          component: () => import('@/views/front/BiddingProducts.vue'),
           meta: {
-            title: '購物網 | 活動',
+            title: '模型玩具網 | 競標',
             login: false,
             admin: false
           }
@@ -88,7 +88,17 @@ const router = createRouter({
           name: 'product',
           component: () => import('@/views/front/ProductView.vue'),
           meta: {
-            title: '購物網 | 商品',
+            title: '模型玩具網 | 商品',
+            login: false,
+            admin: false
+          }
+        },
+        {
+          path: 'biddings/:id',
+          name: 'biddings',
+          component: () => import('@/views/front/BidDetails.vue'),
+          meta: {
+            title: '模型玩具網 | 商品',
             login: false,
             admin: false
           }
@@ -98,7 +108,17 @@ const router = createRouter({
           name: 'cart',
           component: () => import('@/views/front/CartView.vue'),
           meta: {
-            title: '購物網 | 購物車',
+            title: '模型玩具網 | 購物車',
+            login: true,
+            admin: false
+          }
+        },
+        {
+          path: 'bidcart',
+          name: 'bidcart',
+          component: () => import('@/views/front/BidCart.vue'),
+          meta: {
+            title: '模型玩具網 | 競標',
             login: true,
             admin: false
           }
@@ -108,7 +128,7 @@ const router = createRouter({
           name: 'orders',
           component: () => import('@/views/front/OrdersView.vue'),
           meta: {
-            title: '購物網 | 訂單',
+            title: '模型玩具網 | 訂單',
             login: true,
             admin: false
           }
@@ -124,7 +144,7 @@ const router = createRouter({
           name: 'admin-home',
           component: () => import('@/views/admin/HomeView.vue'),
           meta: {
-            title: '購物網 | 管理',
+            title: '模型玩具網 | 管理',
             login: true,
             admin: true
           }
@@ -134,7 +154,17 @@ const router = createRouter({
           name: 'admin-products',
           component: () => import('@/views/admin/ProductsView.vue'),
           meta: {
-            title: '購物網 | 商品管理',
+            title: '模型玩具網 | 商品管理',
+            login: true,
+            admin: true
+          }
+        },
+        {
+          path: 'biddings',
+          name: 'admin-biddings',
+          component: () => import('@/views/admin/BiddingView.vue'),
+          meta: {
+            title: '模型玩具網 | 競標商品管理',
             login: true,
             admin: true
           }
@@ -144,7 +174,7 @@ const router = createRouter({
           name: 'admin-orders',
           component: () => import('@/views/admin/OrdersView.vue'),
           meta: {
-            title: '購物網 | 訂單管理',
+            title: '模型玩具網 | 訂單管理',
             login: true,
             admin: true
           }
@@ -154,7 +184,7 @@ const router = createRouter({
           name: 'admin-events',
           component: () => import('@/views/admin/NewEvent.vue'),
           meta: {
-            title: '購物網 | 活動管理',
+            title: '模型玩具網 | 活動管理',
             login: true,
             admin: true
           }
@@ -166,7 +196,7 @@ const router = createRouter({
       name: '404',
       component: NotFoundView,
       meta: {
-        title: '購物網 | 404',
+        title: '模型玩具網 | 404',
         login: false,
         admin: false
       }
